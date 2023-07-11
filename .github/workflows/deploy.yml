@@ -2,15 +2,20 @@ name: Deploy Webhook
 
 on:
   workflow_dispatch:
+  push:
       
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Checkout leitosama/github-telegram-webhook
         uses: actions/checkout@v3
         with:
           repository: 'leitosama/github-telegram-webhook'
+          path: github-telegram-webhook
 
       - name: Create zip archive
         run: |
