@@ -3,7 +3,11 @@ name: Deploy Webhook
 on:
   workflow_dispatch:
   push:
-      
+
+env:
+  YC_SERVICE_ACCOUNT_KEY_FILE: "./key.json"
+  TF_VAR_zip_file: "function.zip"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,10 +27,13 @@ jobs:
           rm -rf github-telegram-webhook/.env.example
           rm -rf github-telegram-webhook/.templates.example
           rm -rf github-telegram-webhook/.git*
-          zip -r function.zip github-telegram-webhook/*
+          zip -r ${{ env.TF_VAR_zip_file }} github-telegram-webhook/*
 
       - name: Save key file from Secret
-        run: echo ${{ secrets.YC_SA_KEY }} > key.json
+        run: |
+          python -c "import os; file = open('${{ env.YC_SERVICE_ACCOUNT_KEY_FILE }}', 'w'); file.write(os.environ['KEY_DATA']); file.close()"
+        env:
+          KEY_DATA: ${{ secrets.YC_SA_KEY }}
   
       - uses: hashicorp/setup-terraform@v2
 
@@ -40,11 +47,9 @@ jobs:
           TF_VAR_webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
           TF_VAR_chat_id: ${{ secrets.CHAT_ID }}
           TF_VAR_bot_token: ${{ secrets.BOT_TOKEN }}
-          TF_VAR_zip_file: "function.zip"
           TF_VAR_user_hash: ${{ github.sha }}
           YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
           YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
-          YC_SERVICE_ACCOUNT_KEY_FILE: "./key.json"
 
       - name: Post-action
         if: always()
