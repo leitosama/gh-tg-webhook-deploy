@@ -21,13 +21,15 @@ jobs:
           repository: 'leitosama/github-telegram-webhook'
           path: github-telegram-webhook
 
-      - name: Create zip archive
+      - name: Prepare zip archive
         run: |
           mv templates/ github-telegram-webhook
           rm -rf github-telegram-webhook/.env.example
           rm -rf github-telegram-webhook/.templates.example
           rm -rf github-telegram-webhook/.git*
-          zip -r ${{ env.TF_VAR_zip_file }} github-telegram-webhook/*
+      
+      - run: zip -r ../${{ env.TF_VAR_zip_file }} ./
+        working-directory: ./github-telegram-webhook
 
       - name: Save key file from Secret
         run: |
