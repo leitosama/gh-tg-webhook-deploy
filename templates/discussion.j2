@@ -1,0 +1,7 @@
+{% if data['action']=="created" %}
+    <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ] </a>
+    <a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> создал дисскусию <a href="{{ data['discussion']['html_url'] }}">{{ data['discussion']['title'] }}</a>:
+    <code>
+    {{ data['comment']['body'] }}
+    </code>
+{% endif %}

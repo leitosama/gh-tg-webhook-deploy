@@ -1,0 +1,16 @@
+{% if data['action']=="released" %}
+    <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
+    Новый релиз <a href="{{ data['release']['html_url'] }}">{{ data['release']['tag_name'] }}</a>:
+    <code>
+    {{ data['release']['body'] }}
+    </code>
+    Ссылки для скачивания:
+    <a href="{{ data['repository']['tarball_url'] }}">tar</a>
+    <a href="{{ data['repository']['zipball_url'] }}">zip</a>
+{% elif data['action']=="prereleased" %}
+    <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ] </a>
+    Новый Pre-релиз <a href="{{ data['release']['html_url'] }}">{{ data['release']['tag_name'] }}</a>:
+    <code>
+    {{ data['release']['body'] }}
+    </code>
+{% endif %}
