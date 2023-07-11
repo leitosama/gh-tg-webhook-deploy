@@ -50,7 +50,7 @@ resource "yandex_function" "tf-function" {
 }
 
 resource "yandex_function_iam_binding" "function-iam" {
-  function_id = "${yandex_function.test-function.id}"
+  function_id = "${yandex_function.tf-function.id}"
   role        = "functions.functionInvoker"
   members = [
     "system:allUsers",
