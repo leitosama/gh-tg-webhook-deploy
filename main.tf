@@ -7,18 +7,6 @@ terraform {
   required_version = ">= 0.13"
 }
 
-variable "webhook_secret" {
-  type = string
-}
-
-variable "chat_id" {
-  type = string
-}
-
-variable "bot_token" {
-  type = string
-}
-
 variable zip_file {
   type = string
 }
@@ -27,8 +15,21 @@ variable "user_hash" {
   type = string
 }
 
+variable "secret_id" {
+  type = string
+}
+
+variable "secret_version_id" {
+  type = string
+}
+
+variable "sa_account_id" {
+  type = string  
+}
+
 provider "yandex" {
 }
+
 
 resource "yandex_function" "tf-function" {
   name               = "github-telegram-webhook"
@@ -38,11 +39,27 @@ resource "yandex_function" "tf-function" {
   entrypoint         = "main.ya_handler"
   memory             = "128"
   execution_timeout  = "10"
+  service_account_id = var.sa_account_id
   environment = {
-    WEBHOOK_SECRET = var.webhook_secret
-    CHAT_ID = var.chat_id
-    BOT_TOKEN = var.bot_token
     TEMPLATES_PATH = "./templates"
+  }
+  secrets {
+    id = var.secret_id
+    version_id = var.secret_version_id
+    key = "BOT_TOKEN"
+    environment_variable = "BOT_TOKEN"
+  }
+  secrets {
+    id = var.secret_id
+    version_id = var.secret_version_id
+    key = "CHAT_ID"
+    environment_variable = "CHAT_ID"    
+  }
+  secrets {
+    id = var.secret_id
+    version_id = var.secret_version_id
+    key = "WEBHOOK_SECRET"
+    environment_variable = "WEBHOOK_SECRET"    
   }
   content {
     zip_filename = var.zip_file
