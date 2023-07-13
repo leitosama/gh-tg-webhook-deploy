@@ -27,13 +27,18 @@ variable "sa_account_id" {
   type = string  
 }
 
+variable "project_name" {
+  type = string
+}
+
+
 provider "yandex" {
 }
 
 
 resource "yandex_function" "tf-function" {
-  name               = "github-telegram-webhook"
-  description        = "Webhook to recieve GitHub Events"
+  name               = "github-telegram-webhook-${var.project_name}"
+  description        = "Webhook to recieve GitHub Events (project ${var.project_name})"
   user_hash          = var.user_hash
   runtime            = "python311"
   entrypoint         = "main.ya_handler"

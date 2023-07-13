@@ -52,6 +52,7 @@ jobs:
           TF_VAR_sa_account_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_ACCOUNT_ID || secrets[format('{0}_YC_SA_ACCOUNT_ID',github.ref_name)] }}
           TF_VAR_secret_version_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_VERSION_ID || secrets[format('{0}_YC_SECRET_VERSION_ID',github.ref_name)] }}
           TF_VAR_secret_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_ID || secrets[format('{0}_YC_SECRET_ID',github.ref_name)] }}
+          TF_VAR_project_name: ${{ github.ref_name }}
           YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secrets[format('{0}_YC_CLOUD_ID',github.ref_name)] }}
           YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secrets[format('{0}_YC_FOLDER_ID',github.ref_name)] }}
 
