@@ -49,11 +49,11 @@ jobs:
           terraform apply -no-color -auto-approve tfplan
         env:
           TF_VAR_user_hash: ${{ github.sha }}
-          TF_VAR_sa_account_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_ACCOUNT_ID || secret[format('{0}_YC_SA_ACCOUNT_ID',github.head_ref)]] }}
-          TF_VAR_secret_version_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_VERSION_ID || secret[format('{0}_YC_SECRET_VERSION_ID',github.head_ref)]] }}
-          TF_VAR_secret_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_ID || secret[format('{0}_YC_SECRET_ID',github.head_ref)]] }}
-          YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secret[format('{0}_YC_CLOUD_ID',github.head_ref)]] }}
-          YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secret[format('{0}_YC_FOLDER_ID',github.head_ref)]] }}
+          TF_VAR_sa_account_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_ACCOUNT_ID || secrets[format('{0}_YC_SA_ACCOUNT_ID',github.head_ref)]] }}
+          TF_VAR_secret_version_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_VERSION_ID || secrets[format('{0}_YC_SECRET_VERSION_ID',github.head_ref)]] }}
+          TF_VAR_secret_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_ID || secrets[format('{0}_YC_SECRET_ID',github.head_ref)]] }}
+          YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secrets[format('{0}_YC_CLOUD_ID',github.head_ref)]] }}
+          YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secrets[format('{0}_YC_FOLDER_ID',github.head_ref)]] }}
 
       - name: Post-action
         if: always()
