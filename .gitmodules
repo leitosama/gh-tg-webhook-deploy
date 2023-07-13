@@ -1,0 +1,3 @@
+[submodule "github-telegram-webhook"]
+	path = github-telegram-webhook
+	url = https://github.com/leitosama/github-telegram-webhook/
