@@ -39,7 +39,7 @@ jobs:
         with:
           path: |
             terraform.tfstate
-          key: ${{ runner.os }}-tfstate
+          key: ${{ github.head_ref }}-tfstate
 
       - run: terraform init -no-color
 
