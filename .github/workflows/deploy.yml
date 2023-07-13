@@ -30,7 +30,7 @@ jobs:
         run: |
           python -c "import os; file = open('${{ env.YC_SA_KEY_FILE }}', 'w'); file.write(os.environ['KEY_DATA']); file.close()"
         env:
-          KEY_DATA: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_KEY || secret[format('{0}_YC_SA_KEY',github.head_ref)]] }}
+          KEY_DATA: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_KEY || secrets[format('{0}_YC_SA_KEY',github.head_ref)]] }}
   
       - uses: hashicorp/setup-terraform@v2
 
