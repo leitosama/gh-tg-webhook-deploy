@@ -43,8 +43,7 @@ jobs:
 
       - run: terraform init -no-color
 
-      - name: Terraform plan & apply (main)
-        if: endsWith(github.ref, '/main')
+      - name: Terraform plan & apply
         run: |
           terraform plan -no-color -out=tfplan
           terraform apply -no-color -auto-approve tfplan
