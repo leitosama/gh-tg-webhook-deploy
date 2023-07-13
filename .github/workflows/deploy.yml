@@ -5,7 +5,7 @@ on:
   push:
 
 env:
-  YC_SERVICE_ACCOUNT_KEY_FILE: "./key.json"
+  YC_SA_KEY_FILE: "./key.json"
   TF_VAR_zip_file: "function.zip"
 
 jobs:
@@ -28,9 +28,9 @@ jobs:
 
       - name: Save key file from Secret
         run: |
-          python -c "import os; file = open('${{ env.YC_SERVICE_ACCOUNT_KEY_FILE }}', 'w'); file.write(os.environ['KEY_DATA']); file.close()"
+          python -c "import os; file = open('${{ env.YC_SA_KEY_FILE }}', 'w'); file.write(os.environ['KEY_DATA']); file.close()"
         env:
-          KEY_DATA: ${{ secrets.YC_SA_KEY }}
+          KEY_DATA: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_KEY || secret[format('{0}_YC_SA_KEY',github.head_ref)]] }}
   
       - uses: hashicorp/setup-terraform@v2
 
@@ -42,17 +42,18 @@ jobs:
 
       - run: terraform init -no-color
 
-      - name: Terraform plan & apply
+      - name: Terraform plan & apply (main)
+        if: endsWith(github.ref, '/main')
         run: |
           terraform plan -no-color -out=tfplan
           terraform apply -no-color -auto-approve tfplan
         env:
           TF_VAR_user_hash: ${{ github.sha }}
-          TF_VAR_sa_account_id: ${{ secrets.YC_SA_ACCOUNT_ID }}
-          TF_VAR_secret_version_id: ${{ secrets.YC_SECRET_VERSION_ID }}
-          TF_VAR_secret_id: ${{ secrets.YC_SECRET_ID }}
-          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
-          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+          TF_VAR_sa_account_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_ACCOUNT_ID || secret[format('{0}_YC_SA_ACCOUNT_ID',github.head_ref)]] }}
+          TF_VAR_secret_version_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_VERSION_ID || secret[format('{0}_YC_SECRET_VERSION_ID',github.head_ref)]] }}
+          TF_VAR_secret_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_ID || secret[format('{0}_YC_SECRET_ID',github.head_ref)]] }}
+          YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secret[format('{0}_YC_CLOUD_ID',github.head_ref)]] }}
+          YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secret[format('{0}_YC_FOLDER_ID',github.head_ref)]] }}
 
       - name: Post-action
         if: always()
