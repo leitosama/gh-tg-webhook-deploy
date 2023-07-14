@@ -1,5 +1,5 @@
 {% if data['action']=="created" %}
 <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-&#128221;<code>{{ data['sender']['login'] }}</code> оставил комментарий в Issue #{{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>.
+&#128221;@{{ data['sender']['login'] }}оставил комментарий в Issue #{{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>.
 {% if data['comment']['body']!="" %}<code>{{ data['comment']['body'] }}</code>{% endif %}
 {% endif %}
