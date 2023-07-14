@@ -1,5 +1,5 @@
 {% if data['action']=="opened" %}
 <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ] </a>
-&#128161;<a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> создал Issue #{{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>
+&#128161;<code>{{ data['sender']['login'] }}</code> создал Issue #{{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>
 {% if data['issue']['body']!="" %}<code>{{ data['issue']['body'] }}</code>{% endif %}
 {% endif %}

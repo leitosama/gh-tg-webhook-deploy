@@ -1,5 +1,5 @@
 {% if data['action']=="created" %}
 <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-&#128227;<a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> создал дисскусию <a href="{{ data['discussion']['html_url'] }}">{{ data['discussion']['title'] }}</a>
+&#128227;<code>{{ data['sender']['login'] }}</code> создал дисскусию <a href="{{ data['discussion']['html_url'] }}">{{ data['discussion']['title'] }}</a>
 {% if data['discussion']['body']!="" %}<code>{{ data['discussion']['body'] }}</code>{% endif %}
 {% endif %}
