@@ -1,4 +1,4 @@
 {% if data['action']=="created" %}
-    <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ] </a>
-    <a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> оставил комментарий в Issue {{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>.
+<a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
+&#128221;<a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> оставил комментарий в Issue #{{ data['issue']['number'] }} <a href="{{ data['issue']['html_url'] }}">{{ data['issue']['title'] }}</a>.
 {% endif %}

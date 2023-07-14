@@ -1,4 +1,4 @@
 {% if data['action']=="opened" %}
-    <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-    <a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> создал Pull Request {{ data['pull_request']['number'] }} <a href="{{ data['pull_request']['html_url'] }}">{{ data['pull_request']['title'] }}</a>:
+<a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
+%#128295;<a href="{{ data['sender']['html_url'] }}">{{ data['sender']['login'] }}</a> создал Pull Request #{{ data['pull_request']['number'] }} <a href="{{ data['pull_request']['html_url'] }}">{{ data['pull_request']['title'] }}</a>:
 {% endif %}
