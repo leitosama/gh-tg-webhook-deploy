@@ -1,4 +1,4 @@
-name: Deploy Webhook
+name: Test Templates && Deploy Webhook
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ env:
   TF_VAR_zip_file: "function.zip"
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,6 +17,21 @@ jobs:
         with:
           submodules: 'recursive'
 
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - run: pip install -r requirements.txt
+          
+      - name: Run template tests
+        run: python ./j2test.py
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: Prepare zip archive
         run: |
           mv templates/ github-telegram-webhook
