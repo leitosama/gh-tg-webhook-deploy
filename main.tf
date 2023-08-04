@@ -27,6 +27,10 @@ variable "webhook_secret" {
   type = string
 }
 
+variable "thread_id" {
+  type = string
+}
+
 variable "sa_account_id" {
   type = string  
 }
@@ -66,6 +70,10 @@ resource "yandex_lockbox_secret_version" "tf_secret_version" {
     key = "WEBHOOK_SECRET"
     text_value = var.webhook_secret 
   }
+  entries {
+    key = "THREAD_ID"
+    text_value = var.thread_id 
+  }
 }
 
 resource "yandex_function" "tf-function" {
@@ -97,6 +105,12 @@ resource "yandex_function" "tf-function" {
     version_id = yandex_lockbox_secret_version.tf_secret_version.id
     key = "WEBHOOK_SECRET"
     environment_variable = "WEBHOOK_SECRET"    
+  }
+  secrets {
+    id = yandex_lockbox_secret.tf_secret.id
+    version_id = yandex_lockbox_secret_version.tf_secret_version.id
+    key = "THREAD_ID"
+    environment_variable = "THREAD_ID"    
   }
   content {
     zip_filename = var.zip_file
