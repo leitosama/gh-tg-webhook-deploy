@@ -48,7 +48,7 @@ resource "yandex_kms_symmetric_key" "tf_key" {
 
 resource "yandex_lockbox_secret" "tf_secret" {
   name = "gh-tg-webhook-secret-${var.project_name}"
-  kms_key_id = yandex_kms_symmetric_key.tf_key.kms_key_id
+  kms_key_id = yandex_kms_symmetric_key.tf_key.id
   description = "LockBox secret for gh-tg-webhook (project ${var.project_name})"
 }
 
