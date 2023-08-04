@@ -68,8 +68,10 @@ jobs:
         env:
           TF_VAR_user_hash: ${{ github.sha }}
           TF_VAR_sa_account_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SA_ACCOUNT_ID || secrets[format('{0}_YC_SA_ACCOUNT_ID',github.ref_name)] }}
-          TF_VAR_secret_version_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_VERSION_ID || secrets[format('{0}_YC_SECRET_VERSION_ID',github.ref_name)] }}
-          TF_VAR_secret_id: ${{ github.ref == 'refs/heads/main' && secrets.YC_SECRET_ID || secrets[format('{0}_YC_SECRET_ID',github.ref_name)] }}
+          TF_VAR_bot_token: ${{ github.ref == 'refs/heads/main' && secrets.BOT_TOKEN || secrets[format('{0}_BOT_TOKEN',github.ref_name)] }}
+          TF_VAR_webhook_secret: ${{ github.ref == 'refs/heads/main' && secrets.WEBHOOK_SECRET || secrets[format('{0}_WEBHOOK_SECRET',github.ref_name)] }}
+          TF_VAR_chat_id: ${{ github.ref == 'refs/heads/main' && secrets.CHAT_ID || secrets[format('{0}_CHAT_ID',github.ref_name)] }}
+          TF_VAR_thread_id: ${{ github.ref == 'refs/heads/main' && secrets.THREAD_ID || secrets[format('{0}_THREAD_ID',github.ref_name)] }}
           TF_VAR_project_name: ${{ github.ref_name }}
           YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secrets[format('{0}_YC_CLOUD_ID',github.ref_name)] }}
           YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secrets[format('{0}_YC_FOLDER_ID',github.ref_name)] }}

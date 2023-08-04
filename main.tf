@@ -15,11 +15,19 @@ variable "user_hash" {
   type = string
 }
 
-variable "secret_id" {
+variable "bot_token" {
   type = string
 }
 
-variable "secret_version_id" {
+variable "chat_id" {
+  type = string
+}
+
+variable "webhook_secret" {
+  type = string
+}
+
+variable "thread_id" {
   type = string
 }
 
@@ -35,6 +43,38 @@ variable "project_name" {
 provider "yandex" {
 }
 
+resource "yandex_kms_symmetric_key" "tf_key" {
+  name              = "gh-tg-webhook-kms-key-${var.project_name}"
+  description       = "KMS Key for Webhook"
+  default_algorithm = "AES_256"
+  rotation_period   = "8760h" // equal to 1 year
+}
+
+resource "yandex_lockbox_secret" "tf_secret" {
+  name = "gh-tg-webhook-secret-${var.project_name}"
+  kms_key_id = yandex_kms_symmetric_key.tf_key.id
+  description = "LockBox secret for gh-tg-webhook (project ${var.project_name})"
+}
+
+resource "yandex_lockbox_secret_version" "tf_secret_version" {
+  secret_id = yandex_lockbox_secret.tf_secret.id
+  entries {
+    key = "BOT_TOKEN"
+    text_value = var.bot_token
+  }
+  entries {
+    key = "CHAT_ID"
+    text_value = var.chat_id  
+  }
+  entries {
+    key = "WEBHOOK_SECRET"
+    text_value = var.webhook_secret 
+  }
+  entries {
+    key = "THREAD_ID"
+    text_value = var.thread_id 
+  }
+}
 
 resource "yandex_function" "tf-function" {
   name               = "github-telegram-webhook-${var.project_name}"
@@ -49,26 +89,26 @@ resource "yandex_function" "tf-function" {
     TEMPLATES_PATH = "./templates"
   }
   secrets {
-    id = var.secret_id
-    version_id = var.secret_version_id
+    id = yandex_lockbox_secret.tf_secret.id
+    version_id = yandex_lockbox_secret_version.tf_secret_version.id
     key = "BOT_TOKEN"
     environment_variable = "BOT_TOKEN"
   }
   secrets {
-    id = var.secret_id
-    version_id = var.secret_version_id
+    id = yandex_lockbox_secret.tf_secret.id
+    version_id = yandex_lockbox_secret_version.tf_secret_version.id
     key = "CHAT_ID"
     environment_variable = "CHAT_ID"    
   }
   secrets {
-    id = var.secret_id
-    version_id = var.secret_version_id
+    id = yandex_lockbox_secret.tf_secret.id
+    version_id = yandex_lockbox_secret_version.tf_secret_version.id
     key = "WEBHOOK_SECRET"
     environment_variable = "WEBHOOK_SECRET"    
   }
   secrets {
-    id = var.secret_id
-    version_id = var.secret_version_id
+    id = yandex_lockbox_secret.tf_secret.id
+    version_id = yandex_lockbox_secret_version.tf_secret_version.id
     key = "THREAD_ID"
     environment_variable = "THREAD_ID"    
   }
