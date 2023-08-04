@@ -66,6 +66,12 @@ resource "yandex_function" "tf-function" {
     key = "WEBHOOK_SECRET"
     environment_variable = "WEBHOOK_SECRET"    
   }
+  secrets {
+    id = var.secret_id
+    version_id = var.secret_version_id
+    key = "THREAD_ID"
+    environment_variable = "THREAD_ID"    
+  }
   content {
     zip_filename = var.zip_file
   }
