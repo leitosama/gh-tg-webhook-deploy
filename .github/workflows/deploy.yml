@@ -38,6 +38,7 @@ jobs:
       - name: Prepare zip archive
         run: |
           mv templates/ github-telegram-webhook
+          cp helpers/* github-telegram-webhook/helpers/
           rm -rf github-telegram-webhook/.env.example
           rm -rf github-telegram-webhook/.templates.example
           rm -rf github-telegram-webhook/.git*
