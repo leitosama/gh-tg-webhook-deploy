@@ -60,16 +60,22 @@ jobs:
   
       - uses: hashicorp/setup-terraform@v2
 
+      - name: Prepare s3 tf backend
+        run: |
+          cat > yc.s3.tfbackend << EOF
+          endpoint="${{ vars.TF_BACKEND_S3_ENDPOINT }}"
+          bucket="${{ vars.TF_BACKEND_S3_BUCKET }}"
+          region="${{ vars.TF_BACKEND_S3_REGION }}"
+          key="${{ env.YC_FOLDER_ID }}/terraform.tfstate"
+          access_key="${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_ID || secrets[format('{0}_TF_BACKEND_S3_SA_ID',github.ref_name)] }}"
+          secret_key="${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_SECRET || secrets[format('{0}_TF_BACKEND_S3_SA_SECRET',github.ref_name)] }}"
+          skip_region_validation=true
+          skip_credentials_validation=true
+          EOF
+
       - run: |
-          terraform init -no-color \
-          -backend-config="endpoint=${{ vars.TF_BACKEND_S3_ENDPOINT }}" \
-          -backend-config="bucket=${{ vars.TF_BACKEND_S3_BUCKET }}" \ 
-          -backend-config="region=ru-central1" \
-          -backend-config="key=${{ env.YC_FOLDER_ID }}/terraform.tfstate" \
-          -backend-config="access_key=${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_ID || secrets[format('{0}_TF_BACKEND_S3_SA_ID',github.ref_name)] }}" \
-          -backend-config="secret_key=${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_SECRET || secrets[format('{0}_TF_BACKEND_S3_SA_SECRET',github.ref_name)] }}" \
-          -backend-config="skip_region_validation=true" \ 
-          -backend-config="skip_credentials_validation=true"
+          terraform init -no-color -backend-config=yc.s3.tfbackend
+
 
       - name: Terraform plan & apply
         run: |
