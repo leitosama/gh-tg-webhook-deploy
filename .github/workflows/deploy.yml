@@ -7,6 +7,8 @@ on:
 env:
   YC_SERVICE_ACCOUNT_KEY_FILE: "./key.json"
   TF_VAR_zip_file: "function.zip"
+  YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secrets[format('{0}_YC_CLOUD_ID',github.ref_name)] }}
+  YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secrets[format('{0}_YC_FOLDER_ID',github.ref_name)] }}
 
 jobs:
   test:
@@ -58,13 +60,16 @@ jobs:
   
       - uses: hashicorp/setup-terraform@v2
 
-      - uses: actions/cache@v3
-        with:
-          path: |
-            terraform.tfstate
-          key: tfstate-${{ github.ref_name }}
-
-      - run: terraform init -no-color
+      - run: |
+          terraform init -no-color \
+          -backend-config="endpoint=${{ vars.TF_BACKEND_S3_ENDPOINT }}" \
+          -backend-config="bucket=${{ vars.TF_BACKEND_S3_BUCKET }}" \ 
+          -backend-config="region=ru-central1" \
+          -backend-config="key=${{ env.YC_FOLDER_ID }}/terraform.tfstate" \
+          -backend-config="access_key=${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_ID || secrets[format('{0}_TF_BACKEND_S3_SA_ID',github.ref_name)] }}" \
+          -backend-config="secret_key=${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_SECRET || secrets[format('{0}_TF_BACKEND_S3_SA_SECRET',github.ref_name)] }}" \
+          -backend-config="skip_region_validation=true" \ 
+          -backend-config="skip_credentials_validation=true"
 
       - name: Terraform plan & apply
         run: |
@@ -78,8 +83,7 @@ jobs:
           TF_VAR_chat_id: ${{ github.ref == 'refs/heads/main' && secrets.CHAT_ID || secrets[format('{0}_CHAT_ID',github.ref_name)] }}
           TF_VAR_thread_id: ${{ github.ref == 'refs/heads/main' && secrets.THREAD_ID || secrets[format('{0}_THREAD_ID',github.ref_name)] }}
           TF_VAR_project_name: ${{ github.ref_name }}
-          YC_CLOUD_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_CLOUD_ID || secrets[format('{0}_YC_CLOUD_ID',github.ref_name)] }}
-          YC_FOLDER_ID: ${{ github.ref == 'refs/heads/main' && secrets.YC_FOLDER_ID || secrets[format('{0}_YC_FOLDER_ID',github.ref_name)] }}
+
 
       - name: Post-action
         if: always()
