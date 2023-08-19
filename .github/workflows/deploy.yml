@@ -64,7 +64,7 @@ jobs:
         run: |
           cat > yc.s3.tfbackend << EOF
           endpoint="${{ vars.TF_BACKEND_S3_ENDPOINT }}"
-          bucket="${{ vars.TF_BACKEND_S3_BUCKET }}"
+          bucket="${{ github.ref == 'refs/heads/main' && vars.TF_BACKEND_S3_BUCKET || vars[format('{0}_TF_BACKEND_S3_BUCKET',github.ref_name)] }}"
           region="${{ vars.TF_BACKEND_S3_REGION }}"
           key="${{ env.YC_FOLDER_ID }}/terraform.tfstate"
           access_key="${{ github.ref == 'refs/heads/main' && secrets.TF_BACKEND_S3_SA_ID || secrets[format('{0}_TF_BACKEND_S3_SA_ID',github.ref_name)] }}"
