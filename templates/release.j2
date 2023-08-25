@@ -1,17 +1,17 @@
 {% if data['action']=="released" %}
-<a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-&#128293;Новый релиз <a href="{{ data['release']['html_url'] }}">{{ data['release']['tag_name'] }}</a>
-{% if data['release']['body']!="" %}<code>{{ data['release']['body'] }}</code>{% endif %}
+[[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
+&#128293;Новый релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
+{% if data['release']['body']!="" %}{{ data['release']['body'] }}{% endif %}
 Ссылки для скачивания:
-  <a href="{{ data['release']['tarball_url'] }}">Source code (tar)</a>
-  <a href="{{ data['release']['zipball_url'] }}">Source code (zip)</a>
+  [Source code (tar)]({{ data['release']['tarball_url'] }})
+  [Source code (zip)]({{ data['release']['zipball_url'] }})
   {{ get_release_assets(data['release']['assets_url']) }} 
 {% elif data['action']=="prereleased" %}
 <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-&#128293;Новый Pre-релиз <a href="{{ data['release']['html_url'] }}">{{ data['release']['tag_name'] }}</a>
-{% if data['release']['body']!="" %}<code>{{ data['release']['body'] }}</code>{% endif %}
+&#128293;Новый Pre-релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
+{% if data['release']['body']!="" %}{{ data['release']['body'] }}{% endif %}
 Ссылки для скачивания:
-  <a href="{{ data['release']['tarball_url'] }}">Source code (tar)</a>
-  <a href="{{ data['release']['zipball_url'] }}">Source code (zip)</a>
+  [Source code (tar)]({{ data['release']['tarball_url'] }})
+  [Source code (zip)]({{ data['release']['zipball_url'] }})
   {{ get_release_assets(data['release']['assets_url']) }} 
 {% endif %}
