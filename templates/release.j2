@@ -1,6 +1,6 @@
 {% if data['action']=="released" %}
 [[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
-&#128293;Новый релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
+🔥Новый релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
 {% if data['release']['body']!="" %}{{ data['release']['body'] }}{% endif %}
 Ссылки для скачивания:
   [Source code (tar)]({{ data['release']['tarball_url'] }})
@@ -8,7 +8,7 @@
   {{ get_release_assets(data['release']['assets_url']) }} 
 {% elif data['action']=="prereleased" %}
 <a href="{{ data['repository']['html_url'] }}">[ {{ data['repository']['name'] }} ]</a>
-&#128293;Новый Pre-релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
+🔥Новый Pre-релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
 {% if data['release']['body']!="" %}{{ data['release']['body'] }}{% endif %}
 Ссылки для скачивания:
   [Source code (tar)]({{ data['release']['tarball_url'] }})

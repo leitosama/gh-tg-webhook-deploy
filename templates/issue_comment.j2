@@ -1,5 +1,5 @@
 {% if data['action']=="created" %}
 [[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
-&#128221;@{{ data['sender']['login'] }} оставил комментарий в Issue #{{ data['issue']['number'] }} [{{ data['issue']['title'] }}]({{ data['issue']['html_url'] }}).
+📝@{{ data['sender']['login'] }} оставил комментарий в Issue #{{ data['issue']['number'] }} [{{ data['issue']['title'] }}]({{ data['issue']['html_url'] }}).
 {% if data['comment']['body']!="" %}{{ data['comment']['body'] }}{% endif %}
 {% endif %}
