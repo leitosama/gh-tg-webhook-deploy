@@ -1,5 +1,5 @@
 {% if data['action']=="created" %}
-[[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
+  [{{ data['repository']['name'] }}]({{ data['repository']['html_url'] }})
 📣@{{ data['sender']['login'] }} создал дисскусию [{{ data['discussion']['title'] }}]({{ data['discussion']['html_url'] }})
 {% if data['discussion']['body']!="" %}{{ data['discussion']['body'] }}{% endif %}
 {% endif %}

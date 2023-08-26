@@ -1,4 +1,4 @@
 {% if data['action']=="opened" %}
-[[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
+  [{{ data['repository']['name'] }}]({{ data['repository']['html_url'] }})
 🔧@{{ data['sender']['login'] }} создал Pull Request #{{ data['pull_request']['number'] }} [{{ data['pull_request']['title'] }}]({{ data['pull_request']['html_url'] }})
 {% endif %}

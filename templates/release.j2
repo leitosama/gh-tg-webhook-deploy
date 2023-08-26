@@ -1,5 +1,5 @@
 {% if data['action']=="released" %}
-[[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
+  [{{ data['repository']['name'] }}]({{ data['repository']['html_url'] }})
 🔥Новый релиз [{{ data['release']['tag_name'] }}]({{ data['release']['html_url'] }})
 {% if data['release']['body']!="" %}{{ data['release']['body'] }}{% endif %}
 Ссылки для скачивания:

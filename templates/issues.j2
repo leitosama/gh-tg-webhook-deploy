@@ -1,5 +1,5 @@
 {% if data['action']=="opened" %}
-[[ {{ data['repository']['name'] }} ]]({{ data['repository']['html_url'] }})
+  [{{ data['repository']['name'] }}]({{ data['repository']['html_url'] }})
 💡@{{ data['sender']['login'] }} создал Issue #{{ data['issue']['number'] }} [{{ data['issue']['title'] }}]({{ data['issue']['html_url'] }})
 {% if data['issue']['body']!="" %}### Problem{{ md_paragraph_parse(data['issue']['body'],'### Problem') }}&#10;### Solution{{ md_paragraph_parse(data['issue']['body'],'### Solution') }}{% endif %}
 {% endif %}
