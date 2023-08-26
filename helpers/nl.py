@@ -1,0 +1,2 @@
+def nl():
+    return "\n"
